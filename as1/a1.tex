@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{extarticle}
 \usepackage[a4paper,left=1in,right=1in,bottom=1in]{geometry}
 \usepackage[parfill]{parskip}
 \usepackage{ragged2e}
@@ -47,41 +47,73 @@
 \clearpage
 \pagenumbering{arabic}
 
-
+\sffamily
 
 \begin{algorithm}[H]
-\SetAlgoLined
-\KwData{Graph,source}
-\KwResult{Distances of each vertex from the source and starting edges of the shortest paths}
-create priority queue Q of vertices of Graph //min-heap\\
-\ForEach {vertex v in Graph}{
-$dist[v] \gets \infty$\\
-$prev[v] \gets \text{UNDEFINED}$\\
-$\text{add} v \text{to} Q$ 
-}
-$dist[source] \gets 0$\\
-\While{Q is not empty do}{
-$u \gets Q.extract()$\\
-\ForEach{neighbour v $\in$ Q of u}{
-$alt \gets dist[u]+length(u,v)$\\
-\If{alt $<$ dist[v]}{
-$dist[v] \gets alt$\\
-$prev[v] \gets u$
-}
-}
-}
-$\text{return} ~dist[],prev[]$
-\caption{Dijkstra's Algorithm}
-\end{algorithm}
-\LARGE{Question1}\\
+    \SetAlgoLined
+    \KwData{Graph,source}
+    \KwResult{Distances of each vertex from the source and starting edges of the shortest paths}
+    create priority queue Q of vertices of Graph //min-heap\\
+    \ForEach {vertex v in Graph}{
+    $dist[v] \gets \infty$\\
+    $prev[v] \gets \text{UNDEFINED}$\\
+    $\text{add} v \text{to} Q$ 
+    }
+    $dist[source] \gets 0$\\
+    \While{Q is not empty do}{
+    $u \gets Q.extract()$\\
+    \ForEach{neighbour v $\in$ Q of u}{
+    $alt \gets dist[u]+length(u,v)$\\
+    \If{alt $<$ dist[v]}{
+    $dist[v] \gets alt$\\
+    $prev[v] \gets u$
+    }
+    }
+    }
+    $\text{return} ~dist[],prev[]$
+    \caption{Dijkstra's Algorithm}
+    \end{algorithm}
+%\LARGE{Question1}\\
 
-\LARGE{Question2}\\
+\Large{Question 2}\\
+\normalsize
 
 
-\LARGE{Question3}\\
+Subset b) is the required optimal solution for the rest of the cases we can come up
+with a counter example.
 
-\LARGE{Question4}\\
+%\LARGE{Question3}\\
 
+\Large{Question4}\\
+\normalsize
+
+\tbf{a)}\\
+
+We are required to find a minimum weight subset of edges to be removed so that there are no cycles in G.
+We can rephrase this question to find the \tbf{Maximum Spanning Tree} because at the end we want
+a graph which is connected and has no cycles which essentially means that it is a tree.
+But we are required to remove smaller cost edges so the tree with which we obtain at last 
+will be a \tbf{Maximum Spanning Tree}.\\
+In order to solve this problem we can follow the algorithm for finding the Minimum spanning tree
+as discussed in the class with the help of a trick such that since all the edges are positive
+and not equal to zero what we can do is we can convert the cost values to their
+additive inverses i.e, take every cost value and multiply by -1.\\
+Now for this graph with all costs of edges find it's minimum spanning tree as discussed in 
+class either by \tbf{Kruskal's Algorithm} or \tbf{Prim's Algorithm}. After finding the minimum tree for 
+this graph multiply all the edges in the MST with -1 and remove this edges from the 
+set of edges given at the start of the problem the set of remaining edges is the reuqired set.\\
+
+\tbf{b)}\\
+
+In this problem we are given a graph and a set of vertices. Let this set of vertices be $R$
+and it's complement set of vertices be $R^{c}$.Now we are required to connect every vertex in
+$R^{c}$ to $R$ and the set of edges that are required to do this must be minimum.In order 
+to solve this problem we can do this greedily and this is similiar to \tbf{Prim's Algorithm}.\\
+So every time when we are required to add a edge from $R^{c}$ to $R$ we consider all the edges 
+that are coming out from $R$ to $R^{c}$ and we greedily select the edge which has the least 
+weight and we add that edge to our reuired subset and we add the corresponding vertex from the 
+edge which is in $R^{c}$ to $R$ and go on until $R^{c}$ is empty i.e, all the edges which 
+were not in $R$ are now in the set .
 
 
 
