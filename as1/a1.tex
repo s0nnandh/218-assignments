@@ -49,6 +49,30 @@
 
 
 
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{Graph,source}
+\KwResult{Distances of each vertex from the source and starting edges of the shortest paths}
+create priority queue Q of vertices of Graph //min-heap\\
+\ForEach {vertex v in Graph}{
+$dist[v] \gets \infty$\\
+$prev[v] \gets \text{UNDEFINED}$\\
+$\text{add} v \text{to} Q$ 
+}
+$dist[source] \gets 0$\\
+\While{Q is not empty do}{
+$u \gets Q.extract()$\\
+\ForEach{neighbour v $\in$ Q of u}{
+$alt \gets dist[u]+length(u,v)$\\
+\If{alt $<$ dist[v]}{
+$dist[v] \gets alt$\\
+$prev[v] \gets u$
+}
+}
+}
+$\text{return} ~dist[],prev[]$
+\caption{Dijkstra's Algorithm}
+\end{algorithm}
 \LARGE{Question1}\\
 
 \LARGE{Question2}\\
