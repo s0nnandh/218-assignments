@@ -28,6 +28,9 @@
 \usepackage{graphicx}
 \newcommand{\y}[1]{\mathcal{O}(#1)}
 \pagestyle{fancy}
+\usepackage{pgfplots} 
+\pgfplotsset{compat=newest} 
+
 \fancyhf{}
 %\setlength{\parindent}{7em} 
 \lhead{190050043-190050055-190050077-190050079}
@@ -48,31 +51,189 @@
 \pagenumbering{arabic}
 
 \sffamily
+\Large{Question 1}\\
 
-\begin{algorithm}[H]
-    \SetAlgoLined
-    \KwData{Graph,source}
-    \KwResult{Distances of each vertex from the source and starting edges of the shortest paths}
-    create priority queue Q of vertices of Graph //min-heap\\
-    \ForEach {vertex v in Graph}{
-    $dist[v] \gets \infty$\\
-    $prev[v] \gets \text{UNDEFINED}$\\
-    $\text{add} v \text{to} Q$ 
-    }
-    $dist[source] \gets 0$\\
-    \While{Q is not empty do}{
-    $u \gets Q.extract()$\\
-    \ForEach{neighbour v $\in$ Q of u}{
-    $alt \gets dist[u]+length(u,v)$\\
-    \If{alt $<$ dist[v]}{
-    $dist[v] \gets alt$\\
-    $prev[v] \gets u$
-    }
-    }
-    }
-    $\text{return} ~dist[],prev[]$
-    \caption{Dijkstra's Algorithm}
-    \end{algorithm}
+\normalsize
+a) Choosing the course x that ends last, discard classes that conflict with x,
+and recurse.
+\newline
+\newline
+\begin{center}
+
+\begin{tikzpicture} 
+
+\color{red}
+\draw (1,0) rectangle (2,0.2);\draw (2.2,0) rectangle (4,0.2);
+\draw (4.2,0) rectangle (5,0.2);
+\color{green} \draw (1,-0.5) rectangle (5,-0.3);
+\end{tikzpicture}
+    
+\end{center}
+\vspace{0.2in}
+
+for the above case our algorithm will select only one course (green since it ends late) . but optimal schedule is 3 courses ( courses in red)
+\\
+
+
+
+b) Choosing the course x that starts first, discard classes that conflict with x,
+and recurse.
+\newline
+\newline
+\begin{center}
+
+\begin{tikzpicture} 
+
+\color{red}
+\draw (1.2,0) rectangle (2,0.2);\draw (2.2,0) rectangle (4,0.2);
+\draw (4.2,0) rectangle (5,0.2);
+\color{green} \draw (1,-0.5) rectangle (5,-0.3);
+\end{tikzpicture}
+    
+\end{center}
+\vspace{0.2in}
+for the above case our algorithm will select only one course (green since it starts first) . but optimal schedule is 3 courses ( courses in red)
+\\
+
+d) Choosing the course x with shortest duration, discard all classes that
+conflict with x, and recurse.
+\newline
+\newline
+\begin{center}
+
+\begin{tikzpicture} 
+
+\color{green} \draw (3.2,0) rectangle (5,0.2);
+\color{red} \draw (2.7,-0.4) rectangle (3.4,-0.2);
+\color{green} \draw (1,-0.9) rectangle (2.9,-0.7);
+\end{tikzpicture}
+    
+\end{center}
+\vspace{0.2in}
+for the above case our algorithm will select only one course (red since it is shortest duration). but optimal schedule is 2 courses ( courses in green)\\
+
+e) Choose a course x that conflicts with the fewest other courses, discard all classes that conflict with x, and recurse.\newline
+\newline
+\begin{center}
+
+\begin{tikzpicture} 
+\color{red}
+\draw (1,0.4) rectangle (2.5,0.6);\draw (1,0.8) rectangle (2.5,1);
+\color{black} \draw (1,0) rectangle (2.2,0.2);\draw (2.4,0) rectangle (3.5,0.2);\draw (3.8,0) rectangle (5.5,0.2);\color{green} \draw (3,-0.5) rectangle (5,-0.3);\color{red} \draw (1,-0.5) rectangle (2.8,-0.3); \color{orange} \draw (5.2,0.4) rectangle (6,0.6);\draw (5.2,0.8) rectangle (6,1);\draw (5.2,-0.5) rectangle (6,-0.3);;\color{black}  \draw (5.7,0) rectangle (6,0.2);
+\end{tikzpicture}
+\end{center}
+\vspace{0.2in}
+
+For the above case our algorithm choose only 3 courses. our algorithm selects course in green as green course conflicts with only 2 and in next recursion we select one course from red and discards rest and in next to next step selects one from orange and discards rest.
+\newline
+But the optimal is 4 courses ( all Black courses).
+
+f) If no classes conflict, choose them all. Otherwise, discard the course
+with longest duration and recurse.
+\newline
+\newline
+\begin{center}
+
+\begin{tikzpicture} 
+
+\color{red}
+\draw (1,0) rectangle (2.2,0.2);\color{blue} \draw (2.4,0) rectangle (5,0.2);
+
+\color{green} \draw (1,-0.5) rectangle (1.5,-0.3);\color{orange} \draw (1.8,-0.5) rectangle (5,-0.3);
+\end{tikzpicture}
+    
+\end{center}
+
+for the above case our algorithm will select only one course (green ).First it will discard longest course(orange).As there is still a conflict it removes longest course(blue). Again it discards longest course (RED) hence only 1 course left and it is selected .but optimal schedule is 2 courses ( courses in green and blue )\\
+
+g) If no classes conflict, choose them all. Otherwise, discard a course that
+conflicts with the most other courses and recurse.
+\newline
+\newline
+\begin{center}
+
+\begin{tikzpicture} 
+
+\color{red}
+\draw (1,0) rectangle (2.2,0.2);\color{green} \draw (2.4,0) rectangle (3.5,0.2);\color{blue} \draw (3.9,0) rectangle (5,0.2);
+
+\color{orange} \draw (3,-0.5) rectangle (5,-0.3);
+\end{tikzpicture}
+\end{center}
+
+For the above case our algorithm chooses only 2 courses.At first it discards course which has conflict with most courses (Green).Then still there is conflict it removes either blue or orange and then there will be 2 courses without conflicts hence chosen.
+  But optimal solution takes 3 courses ( Red, Green , Blue).\\
+  
+c) Choose the course x that starts last, discard all classes that conflict
+with x, and recurse.\\
+Correctness of the  heuristic:\\
+
+Let $ i_k, i_{k-1}, . . . , i_1 $ be the jobs selected by A.\\
+Let $ j_m, j_{m-1}, . . . , j_1 $ be the jobs selected by OPT.\\
+Lemma
+For all r $\leq$ k, f ($i_r$ ) $>=$ f ($j_r$).\\
+
+For r = 1, by the choice of $i_1$, f ($i_1$) $>=$f ($j_1$).\\ 
+Suppose $f (i_{r-1}) \geq f (j_{r-1})$.\\
+
+When A picks its k-r th course, jr 
+is also available for our algorithm to choose from.Because start time of k-r+1 is greater than k-m+1 the course so if jr is picked by opt then it is indeed able to picked by over algorithm \\
+Our algorithm picks course having max start time if start time of $j_r$ is maximum then it picks it.\\
+hence $f (i_{r}) \geq f (j_{r})$
+
+hence start time of $ i_m \geq j_m $
+hence k $\geq$ m.
+This also shows that the algorithm  gives an optimal solution.
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+% \begin{algorithm}[H]
+%     \SetAlgoLined
+%     \KwData{Graph,source}
+%     \KwResult{Distances of each vertex from the source and starting edges of the shortest paths}
+%     create priority queue Q of vertices of Graph //min-heap\\
+%     \ForEach {vertex v in Graph}{
+%     $dist[v] \gets \infty$\\
+%     $prev[v] \gets \text{UNDEFINED}$\\
+%     $\text{add} v \text{to} Q$ 
+%     }
+%     $dist[source] \gets 0$\\
+%     \While{Q is not empty do}{
+%     $u \gets Q.extract()$\\
+%     \ForEach{neighbour v $\in$ Q of u}{
+%     $alt \gets dist[u]+length(u,v)$\\
+%     \If{alt $<$ dist[v]}{
+%     $dist[v] \gets alt$\\
+%     $prev[v] \gets u$
+%     }
+%     }
+%     }
+%     $\text{return} ~dist[],prev[]$
+%     \caption{Dijkstra's Algorithm}
+%     \end{algorithm}
 %\LARGE{Question1}\\
 
 \Large{Question 2}\\
@@ -80,7 +241,63 @@
 
 
 Subset b) is the required optimal solution for the rest of the cases we can come up
-with a counter example.
+with a counter example.\\
+Consider question papers to be a tuple of \{$t_{i,1}$,$t_{i,2}$\} where $t_{i,1}$,$t_{i,2}$ mean the same as mentioned in the question.\\
+\tbf{Counter Examples}:\\
+For a):\\
+Consider 2 question papers with the first paper \{10,3\} and the second paper be \{6,5\}.
+Now According to this possible greedy strategy our answer would be 21 but we can see that 
+the best possible answer would be 19.\\
+For c) :\\
+Consider 2 question papers with the first paper \{10,3\} and the second paper be \{6,5\}.
+Now According to this possible greedy strategy our answer would be 21 but we can see that 
+the best possible answer would be 19.\\
+For d) : \\
+Consider 2 question papers with the first paper \{10,5\} and the second paper be \{6,3\}.
+Now According to this possible greedy strategy our answer would be 21 but we can see that 
+the best possible answer would be 19.\\
+For e) :\\
+Consider 2 question papers with the first paper \{10,3\} and the second paper be \{6,5\}.
+Now According to this possible greedy strategy our answer would be 21 but we can see that 
+the best possible answer would be 19.\\
+
+\tbf{Proof} : \\
+We can see that since the computer does every task one by one order does not matter 
+and the total time taken by the computer for correcting all the question papers is always 
+the same i.e, $\sum_{i} t_{i,1}$.\\
+So no matter what the order is of the question papers this remains same hence in order to 
+minimize the total time taken we need to take question papers optimally in a way such that
+the total time taken is minimum and such that the correction part done by the teachers must
+be efficient.\\
+So let us prove by contradiction of our algorithm.\\
+Let us consider two question papers with paper-1 be \{$t_{i,1}$,a$\}$ and paper-2 be
+\{$t_{j,1}$,b$\}$ and now for the sake of contradiction let us consider $b > a$.\\
+Then let us calculate the time taken for the completion of correcting these two question papers
+the time taken would be $t_{i,1} + t_{j,1} + max(max(0,a-t_{j,1}),b)$.\\
+
+Here we know that $b > a$ so clearly $b > a - t_{j,1}$ since $t_{j,1} > 0$ therefore 
+the total time taken will become $t_{i,1} + t_{j,1} + b$.\\
+
+Now let us analyze what happens when we swap the two question papers such that the ordering changes
+to \{$t_{j,1}$,b$\}$ and \{$t_{i,1}$,a$\}$ .Now let us calculate the total time taken in this 
+case .\\
+The time taken would be $t_{j,1} + t_{i,1} + max(max(0,b-t_{i,1}),a)$.\\
+Now let us consider 3 cases :\\
+Case i) When $a > b-t_{i,1}$ :\\
+Then we can see that the total time taken $t_{j,1} + t_{i,1} + a$ is cleary greater than the previous case
+without swapping because $b > a$.\\
+Case ii) When $a < b-t_{1,1}$ : \\
+Now the total time would become $t_{j,1} + t_{i,1} + b - t_{i,1}$ which is $t_{j,1} + b$ which is less than the previous case 
+because $t_{i,1} > 0$.\\
+Case iii) When $b-t_{i,1} < 0$ : \\
+Now we can cleary see that $ a > 0 $ and total time would become $t_{j,1} + t_{i,1} + a$ and 
+this follows Case i).\\
+
+Hence we can see that If we come across a situation in which we can swap i.e, If a question
+paper's $t_{i,2}$ is greater than some $t_{j,2}$ in the left of the $i$ question paper then it is just better to swap
+the question paper as it just hepls in minimizing the total time required to correct till the j papers.\\
+Hence genealizing this to an entire set of question papers we want the set to be sorted in 
+non-increasing order by $t_{i,2}$.
 
 %\LARGE{Question3}\\
 
@@ -113,10 +330,50 @@ So every time when we are required to add a edge from $R^{c}$ to $R$ we consider
 that are coming out from $R$ to $R^{c}$ and we greedily select the edge which has the least 
 weight and we add that edge to our reuired subset and we add the corresponding vertex from the 
 edge which is in $R^{c}$ to $R$ and go on until $R^{c}$ is empty i.e, all the edges which 
-were not in $R$ are now in the set .
+were not in $R$ are now in the set .\\
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \KwData{Graph($G = (V,E)$),set of vertices($R$)}
+    \KwResult{Set of minimum weight edges}
+    create empty priority queue Q.Every item of Q is a pair(vertex,weight)\\
+    Adj stores pair(weight of the edge,neighbour) //Same as Adjanceny list\\
+    Create a empty unordered set $ans$ which stores the required set of minimum weight edges.\\
+    \ForEach {vertex v  $\in$ in V}{
+    $key[v] \gets \infty$\\
+    $parent[v] \gets -1$\\
+    $inR[v] = false$ 
+    }
+    \ForEach {vertex v  $\in$ in R}{
+    $key[v] \gets 0$\\
+    $inR[v] = True$\\
+    $Q.insert(\{0,v\})$
+    }
+    \While{Q is not empty do}{
+    $u \gets Q.extract()$\\
+    $uf \gets u.second$\\
+    \If{inR[uf] == True}{$continue$}
+    $inR[uf] = True$\\
+    \ForEach{pair(weight,neighbour) v $\in$ Adj[uf]}{
+    $n \gets v.second$\\
+    $w \gets v.first$\\
+    \If{inR[n] == false and key[n] $>$ w}{
+    $key[n] \gets w$\\
+    $parent[n] \gets u$\\
+    $Q.insert(\{key[n],n\})$\\
+    }
+    }
+    }
+    \ForEach{vertex v $\in$ V}{
+        \If{parent[v] != -1}{
+            $ans.insert(\{parent[v],v\})$
+        }
+    }
+    $\text{return} ~ans$
+    \caption{Algorithm for 4 b)}
+    \end{algorithm}
+
 
 
 
 
 \end{document}
- 
