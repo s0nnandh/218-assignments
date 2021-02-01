@@ -65,7 +65,7 @@ and recurse.
 \color{red}
 \draw (1,0) rectangle (2,0.2);\draw (2.2,0) rectangle (4,0.2);
 \draw (4.2,0) rectangle (5,0.2);
-\color{green} \draw (1,-0.5) rectangle (5,-0.3);
+\color{green} \draw (1,-0.5) rectangle (5.3,-0.3);
 \end{tikzpicture}
     
 \end{center}
@@ -154,26 +154,29 @@ conflicts with the most other courses and recurse.
 
 \begin{tikzpicture} 
 
-\color{red}
-\draw (1,0) rectangle (2.2,0.2);\color{green} \draw (2.4,0) rectangle (3.5,0.2);\color{blue} \draw (3.9,0) rectangle (5,0.2);
-
-\color{orange} \draw (3,-0.5) rectangle (5,-0.3);
+\color{blue}
+\draw (1,0) rectangle (2.2,0.2);\color{green} \draw (2.4,0) rectangle (3.9,0.2); \color{orange}\draw (4.1,0) rectangle (5.4,0.2);
+\color{blue}
+\color{orange} \draw (3.3,-0.5) rectangle (5.4,-0.3);\draw (3.3,0.5) rectangle (5.4,0.7);
+\color{blue} \draw (1,-0.5) rectangle (3,-0.3);\draw (1,0.5) rectangle (3,0.7);
 \end{tikzpicture}
 \end{center}
-
-For the above case our algorithm chooses only 2 courses.At first it discards course which has conflict with most courses (Green).Then still there is conflict it removes either blue or orange and then there will be 2 courses without conflicts hence chosen.
-  But optimal solution takes 3 courses ( Red, Green , Blue).\\
+\vspace{0.2in}
+For the above case our algorithm chooses only 2 courses.At first it discards course which has conflict with most courses (Green).Then still there is conflict it removes either blue or orange and then finally selects one from blue and one from orange there will be 2 courses without conflicts hence chosen.
+  But optimal solution takes 3 courses ( blue, Green , Orange in middle row).\\
   
 c) Choose the course x that starts last, discard all classes that conflict
 with x, and recurse.\\
-Correctness of the  heuristic:\\
+
+\textbf{Correctness of the  heuristic:}\\
 
 Let $ i_k, i_{k-1}, . . . , i_1 $ be the jobs selected by A.\\
 Let $ j_m, j_{m-1}, . . . , j_1 $ be the jobs selected by OPT.\\
 Lemma
-For all r $\leq$ k, f ($i_r$ ) $>=$ f ($j_r$).\\
+For all r $\leq$ k, f ($i_r$ ) $\geq$ f ($j_r$).   ( Where f(x) is start time of job x )\\
 
-For r = 1, by the choice of $i_1$, f ($i_1$) $>=$f ($j_1$).\\ 
+Let us prove by induction\\
+For r = 1, by the choice of $i_1$, f ($i_1$) $\geq$f ($j_1$).\\ 
 Suppose $f (i_{r-1}) \geq f (j_{r-1})$.\\
 
 When A picks its k-r th course, jr 
@@ -183,7 +186,65 @@ hence $f (i_{r}) \geq f (j_{r})$
 
 hence start time of $ i_m \geq j_m $
 hence k $\geq$ m.
-This also shows that the algorithm  gives an optimal solution.
+This also shows that the algorithm  gives an optimal solution.\\
+
+\vspace{0.4 in}
+
+
+h) Let x be the class with the earliest start time, and let y be the class with
+the second earliest start time.\\
+ Case 1 • If x and y are disjoint, choose x and recurse on everything but x.\\
+ Case 2 • If x completely contains y, discard x and recurse.\\
+ Case 3 • Otherwise, discard y and recurse.\\
+
+\textbf{Correctness of the  heuristic:}\\
+
+Let $ i_1, i_{2}, . . . , i_k $ be the jobs selected by A.\\
+Let $ j_2, j_{2}, . . . , j_m $ be the jobs selected by OPT.\\
+Lemma\\
+For all r $\leq$ k, f ($i_r$ ) $\leq$ f ($j_r$).   ( Where f(x) is time taken to complete  xth job )\\
+
+first let us prove our algorithm chooses only course that ends first in available list of courses. and discard courses clash with it.
+Let us prove by induction\\
+For r = 1,\\ 
+Case 1 : As y having 2nd min start time and x,y are disjoint. hence x is the job         that completes 1st and clashes with no other course (since 2nd course starts after completion of 1st ) is chosen by our algorithm. so whatever algorithm chooses is course that ends first with no courses clashing with it.\\
+            
+            
+case 2 : If x completely contains y we discard x.  y ends before x as y is contained in x.  so x is not the one which ends first since y ends first. And as it starts first even there is z which starts 1st x will clash with z as z is contained in x. So we discard only course clashes with course which ends first.
+
+
+case 3 : As y  has starting time more than x and not contained in x so it must have end time greater than x. y is clearly not the course that ends first. even if there is course ends before end of x it has start time after y so it clashes with y.we discard y only courses clash with course that ends first.\\
+
+For r = 1, by the choice of $i_1$, f ($i_1$) $\leq$f ($j_1$). ( Because our algorithm chooses course that ends first)\\ 
+
+Suppose $f (i_{r-1}) \leq f (j_{r-1})$.\\
+
+When A picks its r th course, jr 
+is also available for our algorithm to choose from.Because start time of r-1 is greater than k-1 th course so if jr is picked by opt then it is indeed able to picked by over algorithm \\
+Our algorithm picks course that ends first. if  $j_r$ is course ending first then it picks it.\\
+hence $f (i_{r}) \leq f (j_{r})$\\
+
+hence start time of $ i_m \leq j_m $\\
+hence k $\geq$ m.\\
+This also shows that the algorithm  gives an optimal solution.\\
+
+
+i) If any course x completely contains another course, discard x and
+recurse. Otherwise, choose the course y that ends last, discard all classes
+that conflict with y, and recurse.
+    
+    we will prove that chosen course y not only ends last but also starts last.\\
+    
+Let us assume that there is course  z starts after y.As y ends last then the z should end before or equal to end time of y. then y is containing z but we have removed all courses containing other.At any intermediate point when we discard few courses which clashes with selected one then also same argument holds.\\
+
+This is contradiction. Hence the course which  ends last is starts last.
+Thus  the course by algorithm is like choosing course that ends last in original list of courses.\\
+
+when we discard courses which conflicts with last starting course then it is same as discarding courses conflict with last ending course as we have already removed courses containing this course which also conflicts with last starting in original one.  
+
+hence we have to prove that algorithm selecting course that starts last is optimal.Which is exactly part c of the problem. Hence proved. \\
+
+This  shows that the algorithm gives an optimal solution
 \newpage
 
 
@@ -300,7 +361,7 @@ Hence genealizing this to an entire set of question papers we want the set to be
 non-increasing order by $t_{i,2}$.
 
 %\LARGE{Question3}\\
-
+\newpage
 \Large{Question4}\\
 \normalsize
 
